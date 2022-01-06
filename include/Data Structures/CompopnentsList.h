@@ -7,10 +7,10 @@ class CompopnentsList{
     private:
         int numberOfComponents = 0;
 
-        ElectronicComponent* componentsList[50];
 
     public:
         CompopnentsList();
+        ElectronicComponent* componentsList[50];
 
         int getNumberOfComponents();
         void addComponent(int componentCode);

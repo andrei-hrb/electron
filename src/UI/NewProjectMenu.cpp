@@ -17,13 +17,17 @@ void NewProjectMenu::WatchClick()
     int windowHeight = getwindowheight();
 
     int cType = _none;
-    isComponentSelected = false;
+
+    //bool click = false;
+    //int xMouse, yMouse;
+    //Helper::ConnectionPoint p1, p2;
 
     while (ok)
     {
+
         if (GetAsyncKeyState(VK_LBUTTON))
         {
-            std :: cout << "click " << std :: endl;
+            std ::cout << "click " << std ::endl;
             if (save.isCursorPointInButton())
             {
 
@@ -40,7 +44,6 @@ void NewProjectMenu::WatchClick()
                 //{
                 //    completeSnapshots.saveToFile(hasExtension ? nameFileMenu.filename : (nameFileMenu.filename + ".txt"));
                 //}
-
             }
             else if (capacitors.isCursorPointInButton())
             {
@@ -135,10 +138,10 @@ void NewProjectMenu::WatchClick()
                 setcurrentwindow(this->window_code);
                 Helper::Vector_2D pos = helper.makeVector_2D(cursorPoint.x, cursorPoint.y);
 
-                bool isNotBounded = (cursorPoint.x - COMPONENT_SIZE/2) < this->rl ||
-                                    (cursorPoint.y - COMPONENT_SIZE/2) < this->rt ||
-                                    (cursorPoint.x + COMPONENT_SIZE/2) > this->rr ||
-                                    (cursorPoint.y + COMPONENT_SIZE/2) > this->rb;
+                bool isNotBounded = (cursorPoint.x - COMPONENT_SIZE / 2) < this->rl ||
+                                    (cursorPoint.y - COMPONENT_SIZE / 2) < this->rt ||
+                                    (cursorPoint.x + COMPONENT_SIZE / 2) > this->rr ||
+                                    (cursorPoint.y + COMPONENT_SIZE / 2) > this->rb;
                 if (!isNotBounded)
                 {
                     components.addComponent(cType);
@@ -194,9 +197,69 @@ void NewProjectMenu::WatchClick()
                 // Helper::Vector_2D pos = helper.makeVector_2D(cursorPoint.x, cursorPoint.y);
 
                 // std :: cout << pos.x << " " << pos.y << std :: endl;
+                // if (!click)
+                // {
+                //     clearmouseclick(WM_LBUTTONDOWN);
+                //     xMouse = mousex();
+                //     yMouse = mousey();
+
+                //     for (int i = 0; i < components.getNumberOfComponents(); i++)
+                //     {
+                //         if (components.componentsList[i])
+                //             for (int j = 0; j < components.componentsList[i]->getNumberOfConnectionPoints(); j++)
+                //             {
+                //                 Helper::ConnectionPoint point = components.componentsList[i]->getConnectionPoints()[j];
+                //                 if (abs(point.position.x - xMouse) <= 5 && abs(point.position.y - yMouse) <= 5)
+                //                 {
+                //                     std ::cout << point.connectedComponentCode << std ::endl;
+                //                     p1 = point;
+                //                     p1.connectedComponentCode = components.componentsList[i]->getComponentCode();
+                //                     click = true;
+                //                     break;
+                //                 }
+                //             }
+                //     }
+
+                //     click = false;
+                //     xMouse = mousex();
+                //     yMouse = mousey();
+
+                //     do
+                //     {
+                //         helper.drawWire(p1.position, helper.makeVector_2D(xMouse, yMouse), WHITE);
+                //         delay(50);
+                //         helper.drawWire(p1.position, helper.makeVector_2D(xMouse, yMouse), BLACK);
+                //         xMouse = mousex();
+                //         yMouse = mousey();
+
+                //         if (ismouseclick(WM_LBUTTONDOWN) && !click)
+                //         {
+                //             clearmouseclick(WM_LBUTTONDOWN);
+                //             xMouse = mousex();
+                //             yMouse = mousey();
+
+                //             for (int i = 0; i < components.getNumberOfComponents(); i++)
+                //             {
+                //                 if (components.componentsList[i])
+                //                     for (int j = 0; j < components.componentsList[i]->getNumberOfConnectionPoints(); j++)
+                //                     {
+                //                         Helper::ConnectionPoint point = components.componentsList[i]->getConnectionPoints()[j];
+                //                         if (abs(point.position.x - xMouse) <= 5 && abs(point.position.y - yMouse) <= 5)
+                //                         {
+                //                             std ::cout << point.connectedComponentCode << std ::endl;
+                //                             p2 = point;
+                //                             p2.connectedComponentCode = components.componentsList[i]->getComponentCode();
+                //                             click = true;
+                //                             break;
+                //                         }
+                //                     }
+                //             }
+                //         }
+                //     } while (!click);
+
+                //     helper.drawWire(p1.position, p2.position, WHITE);
+                //}
             }
-
-
         }
         delay(500);
     }
@@ -217,8 +280,8 @@ void NewProjectMenu::Show()
     int windowHeight = getwindowheight();
     double BUTTON_WIDTH = (windowWidth - 50) / 10;
 
-    this->rl = BUTTON_WIDTH * 2,  this->rt = BUTTON_HEIGHT * 3,
-          this->rr = windowWidth - BUTTON_WIDTH * 2, this->rb = windowHeight - 3 * BUTTON_HEIGHT;
+    this->rl = BUTTON_WIDTH * 2, this->rt = BUTTON_HEIGHT * 3,
+    this->rr = windowWidth - BUTTON_WIDTH * 2, this->rb = windowHeight - 3 * BUTTON_HEIGHT;
 
     rectangle(this->rl, this->rt, this->rr, this->rb);
 
@@ -290,37 +353,37 @@ void NewProjectMenu::Show()
 
     double r = 25;
 
-    rotate_l.setPositionCenter(helper.makeVector_2D(this->rr + 3*r, this->rb - 5*r));
+    rotate_l.setPositionCenter(helper.makeVector_2D(this->rr + 3 * r, this->rb - 5 * r));
     rotate_l.setWidth(r);
     rotate_l.setHeight(r);
     rotate_l.setTitle("R<-");
     rotate_l.ShowCircleMode();
 
-    rotate_r.setPositionCenter(helper.makeVector_2D(this->rr + 6*r, this->rb - 5*r));
+    rotate_r.setPositionCenter(helper.makeVector_2D(this->rr + 6 * r, this->rb - 5 * r));
     rotate_r.setWidth(r);
     rotate_r.setHeight(r);
     rotate_r.setTitle("R->");
     rotate_r.ShowCircleMode();
 
-    flip_h.setPositionCenter(helper.makeVector_2D(this->rr + 3*r, this->rb - r));
+    flip_h.setPositionCenter(helper.makeVector_2D(this->rr + 3 * r, this->rb - r));
     flip_h.setWidth(r);
     flip_h.setHeight(r);
     flip_h.setTitle("F<|>");
     flip_h.ShowCircleMode();
 
-    flip_v.setPositionCenter(helper.makeVector_2D(this->rr + 6*r, this->rb -r));
+    flip_v.setPositionCenter(helper.makeVector_2D(this->rr + 6 * r, this->rb - r));
     flip_v.setWidth(r);
     flip_v.setHeight(r);
     flip_v.setTitle("F<->");
     flip_v.ShowCircleMode();
 
-    inc.setPositionCenter(helper.makeVector_2D(this->rl - 3*r, this->rb - 5*r));
+    inc.setPositionCenter(helper.makeVector_2D(this->rl - 3 * r, this->rb - 5 * r));
     inc.setWidth(r);
     inc.setHeight(r);
     inc.setTitle("+");
     inc.ShowCircleMode();
 
-    dec.setPositionCenter(helper.makeVector_2D(this->rl - 6*r, this->rb - 5*r));
+    dec.setPositionCenter(helper.makeVector_2D(this->rl - 6 * r, this->rb - 5 * r));
     dec.setWidth(r);
     dec.setHeight(r);
     dec.setTitle("-");

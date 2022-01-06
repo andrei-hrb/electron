@@ -28,8 +28,6 @@ class NewProjectMenu
 
         //NameFile nameFileMenu;
 
-        bool isComponentSelected;
-        ElectronicComponent selectedComponent;
         CompopnentsList components;
 
 
