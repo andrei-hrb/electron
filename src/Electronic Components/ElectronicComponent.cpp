@@ -358,8 +358,16 @@ void ElectronicComponent::Erase()
     setfillstyle(SOLID_FILL, BLACK);
     setcolor(BLACK);
 
-    this->Show();
-    showElements(true);
+    int outline = 5;
+
+    int points[] = {
+        int(getPositionUpLeft().x - outline), int(getPositionUpLeft().y - outline),
+        int(getPositionDownRight().x + outline), int(getPositionUpLeft().y - outline),
+        int(getPositionDownRight().x + outline), int(getPositionDownRight().y + outline),
+        int(getPositionUpLeft().x - outline), int(getPositionDownRight().y + outline),
+    };
+
+    ElectronicComponent_helper.rotationalFillPoly(4, points, getPositionCenter(), rotateState);
 
     setcolor(WHITE);
     setfillstyle(SOLID_FILL, WHITE);
