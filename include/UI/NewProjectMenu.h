@@ -1,7 +1,6 @@
 #ifndef NEWPROJECTMENU_H
 #define NEWPROJECTMENU_H
 
-#include <iostream>
 #include <graphics.h>
 #include <winbgim.h>
 #include <windows.h>
@@ -21,6 +20,7 @@ class NewProjectMenu
 
         Button save, capacitors, diodes, logicGates, measurements, resistors, sources, switches, transistors, other, exit;
         Button rotate_l, rotate_r, flip_h, flip_v;
+        Button undo, redo;
         Button inc, dec;
 
         ColectionOfSnapshots completeSnapshots;

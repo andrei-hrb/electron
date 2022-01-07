@@ -15,6 +15,8 @@ public:
     Node* getCurrent();
     Node* getHead();
 
+    bool isEmpty();
+
     void setCurrent(Snapshot state);
     void setCurrentToPrevious();
     void setCurrentToNext();

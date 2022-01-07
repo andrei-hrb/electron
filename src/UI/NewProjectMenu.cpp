@@ -1,6 +1,7 @@
 #include "UI/NewProjectMenu.h"
 #include "Data Structures/Snapshot.h"
 
+                #include <iostream>
 #define BUTTON_HEIGHT 25
 #define COMPONENT_SIZE 100
 
@@ -22,7 +23,7 @@ void NewProjectMenu::WatchClick()
 
     while (ok)
     {
-        if (GetAsyncKeyState(VK_LBUTTON) && !GetAsyncKeyState(VK_LCONTROL))
+        if (GetAsyncKeyState(VK_LBUTTON))
         {
             std :: cout << "click " << std :: endl;
             if (save.isCursorPointInButton())
@@ -133,6 +134,7 @@ void NewProjectMenu::WatchClick()
                 POINT cursorPoint;
                 GetCursorPos(&cursorPoint);
                 setcurrentwindow(this->window_code);
+                Helper::Vector_2D pos = helper.makeVector_2D(cursorPoint.x, cursorPoint.y);
 
                 bool isNotBounded = (cursorPoint.x - COMPONENT_SIZE/2) < this->rl ||
                                     (cursorPoint.y - COMPONENT_SIZE/2) < this->rt ||
@@ -154,10 +156,15 @@ void NewProjectMenu::WatchClick()
             }
             else if (flip_h.isCursorPointInButton() && currentSnapshot.getSelectedComponent())
             {
+                //selectedComponent.flipComponent();
                 currentSnapshot.getSelectedComponent()->flipComponent();
             }
             else if (flip_v.isCursorPointInButton() && currentSnapshot.getSelectedComponent())
             {
+                /* selectedComponent.rotateComponent(180);
+                 delay(300);
+                 selectedComponent.flipComponent();
+                 */
                 currentSnapshot.getSelectedComponent()->rotateComponent(currentSnapshot.getSelectedComponent()->getRotationState() + 180);
                 delay(300);
                 currentSnapshot.getSelectedComponent()->flipComponent();
@@ -178,23 +185,42 @@ void NewProjectMenu::WatchClick()
             {
                 currentSnapshot.getSelectedComponent()->setWidth(currentSnapshot.getSelectedComponent()->getWidth() - 15);
             }
-        }
-        else if (GetAsyncKeyState(VK_LBUTTON) && GetAsyncKeyState(VK_LCONTROL))
-        {
-            std :: cout << "move component" << std :: endl;
-        }
-        else if (GetAsyncKeyState(VK_RBUTTON))
-        {
-            std::cout << "trydelete\n";
-            auto components = currentSnapshot.getComponents();
-            for (int i = 0; i < currentSnapshot.getComponentsNumber(); i++)
+            else if (undo.isCursorPointInButton())
             {
+                completeSnapshots.setCurrentToPrevious();
+            }
+            else if (redo.isCursorPointInButton())
+            {
+                completeSnapshots.setCurrentToNext();
+            }
+            else if (cType == _none)
+            {
+                //will move the component
+                // POINT cursorPoint;
+                // GetCursorPos(&cursorPoint);
+                // setcurrentwindow(this->window_code);
 
-                if (components[i]->isCursorPointInButton())
-                {
-                    std::cout << "delete\n";
-                    currentSnapshot.removeComponent(components[i]->getComponentCode());
-                }
+                // Helper::Vector_2D pos = helper.makeVector_2D(cursorPoint.x, cursorPoint.y);
+
+                // std :: cout << pos.x << " " << pos.y << std :: endl;
+            }
+
+            // hacking hack lol - m-as f
+            if (completeSnapshots.isEmpty()) {
+                completeSnapshots.setCurrent(currentSnapshot);
+            } else {
+                bool same = true;
+
+            }
+        }
+        if (GetAsyncKeyState(VK_RBUTTON)) {std::cout << "trydelete\n";
+            auto components = currentSnapshot.getComponents();
+            for (int i = 0; i < currentSnapshot.getComponentsNumber(); i++) {
+                if (mousex() > components[i]->getPositionUpLeft().x && mousex() < components[i]->getPositionDownRight().x &&
+                    mousey() > components[i]->getPositionUpLeft().y && mousey() < components[i]->getPositionDownRight().y) {
+                        std::cout << "delete\n";
+                        currentSnapshot.removeComponent(components[i]->getComponentCode());
+                    }
             }
         }
         delay(500);
@@ -325,5 +351,17 @@ void NewProjectMenu::Show()
     dec.setHeight(r);
     dec.setTitle("-");
     dec.ShowCircleMode();
+
+    redo.setPositionCenter(helper.makeVector_2D(this->rl - 3*r, this->rb - r));
+    redo.setWidth(r);
+    redo.setHeight(r);
+    redo.setTitle("Redo");
+    redo.ShowCircleMode();
+
+    undo.setPositionCenter(helper.makeVector_2D(this->rl - 6*r, this->rb - r));
+    undo.setWidth(r);
+    undo.setHeight(r);
+    undo.setTitle("Undo");
+    undo.ShowCircleMode();
 }
 
