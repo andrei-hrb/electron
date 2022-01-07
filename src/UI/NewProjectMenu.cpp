@@ -20,8 +20,13 @@ void NewProjectMenu::WatchClick()
     int cType = _none;
     iscurrentSnapshotelected = false;
 
+    Helper::ConnectionPoint p1, p2;
+    bool click=false;
+    int i, xMouse,yMouse, id;
+
     while (ok)
     {
+
         if (GetAsyncKeyState(VK_LBUTTON) && !GetAsyncKeyState(VK_LCONTROL))
         {
             std :: cout << "click " << std :: endl;
@@ -178,18 +183,37 @@ void NewProjectMenu::WatchClick()
             {
                 currentSnapshot.getSelectedComponent()->setWidth(currentSnapshot.getSelectedComponent()->getWidth() - 15);
             }
+            else if (cType == _none)
+            {
+                ElectronicComponent **components = currentSnapshot.getComponents();
+                for (int i = 0; i < currentSnapshot.getComponentsNumber(); i++)
+                {
+                    components[i]->setOutterBox(components[i]->isCursorPointInButton());
+                }
+            }
         }
-        else if (GetAsyncKeyState(VK_LBUTTON) && GetAsyncKeyState(VK_LCONTROL))
+        if (GetAsyncKeyState(VK_LBUTTON) && GetAsyncKeyState(VK_LCONTROL) && !GetAsyncKeyState(VK_LSHIFT))
         {
             std :: cout << "move component" << std :: endl;
+            POINT cursorPoint;
+            GetCursorPos(&cursorPoint);
+
+            ElectronicComponent **components = currentSnapshot.getComponents();
+            for (int i = 0; i < currentSnapshot.getComponentsNumber(); i++)
+            {
+
+                if (components[i]->isSelected())
+                {
+                    components[i]->setPositionCenter(helper.makeVector_2D(cursorPoint.x, cursorPoint.y));
+                }
+            }
         }
-        else if (GetAsyncKeyState(VK_RBUTTON))
+        if (GetAsyncKeyState(VK_RBUTTON))
         {
             std::cout << "trydelete\n";
             auto components = currentSnapshot.getComponents();
             for (int i = 0; i < currentSnapshot.getComponentsNumber(); i++)
             {
-
                 if (components[i]->isCursorPointInButton())
                 {
                     std::cout << "delete\n";
@@ -197,7 +221,7 @@ void NewProjectMenu::WatchClick()
                 }
             }
         }
-        delay(500);
+        delay(50);
     }
 
     closegraph(this->window_code);
