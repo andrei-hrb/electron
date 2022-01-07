@@ -3,6 +3,7 @@
 
 #define BUTTON_HEIGHT 25
 #define COMPONENT_SIZE 100
+#define BORDER_SPACE 10
 
 NewProjectMenu::NewProjectMenu()
 {
@@ -26,20 +27,14 @@ void NewProjectMenu::WatchClick()
 
     while (ok)
     {
-
         if (GetAsyncKeyState(VK_LBUTTON) && !GetAsyncKeyState(VK_LCONTROL))
         {
             std :: cout << "click " << std :: endl;
             if (save.isCursorPointInButton())
             {
-                //currentSnapshot.saveToFile("text.xml");
-
                 nameFileMenu.Show();
                 int code = nameFileMenu.ListenEvents();
                 setcurrentwindow(this->window_code);
-
-                bgiout << code << " " << nameFileMenu.filename << std :: endl;
-                outstreamxy(windowWidth / 5, windowHeight / 4);
 
                 if (code)
                 {
@@ -134,10 +129,10 @@ void NewProjectMenu::WatchClick()
             }
             else if (cType != _none)
             {
-                std ::cout << "i m here " << cType << std ::endl;
+                setcurrentwindow(this->window_code);
+
                 POINT cursorPoint;
                 GetCursorPos(&cursorPoint);
-                setcurrentwindow(this->window_code);
 
                 bool isNotBounded = (cursorPoint.x - COMPONENT_SIZE/2) < this->rl ||
                                     (cursorPoint.y - COMPONENT_SIZE/2) < this->rt ||
@@ -146,8 +141,6 @@ void NewProjectMenu::WatchClick()
                 if (!isNotBounded)
                 {
                     currentSnapshot.addComponent(cType);
-                    // std::cout << currentSnapshot.getNumberOfcurrentSnapshot() << " " << currentSnapshot.getSelectedComponent()->toString() << std :: endl;
-
                     if (currentSnapshot.getSelectedComponent())
                     {
                         currentSnapshot.getSelectedComponent()->setWidth(COMPONENT_SIZE);
@@ -192,19 +185,43 @@ void NewProjectMenu::WatchClick()
                 }
             }
         }
-        if (GetAsyncKeyState(VK_LBUTTON) && GetAsyncKeyState(VK_LCONTROL) && !GetAsyncKeyState(VK_LSHIFT))
+        if (GetAsyncKeyState(VK_LBUTTON) && GetAsyncKeyState(VK_LCONTROL))
         {
             std :: cout << "move component" << std :: endl;
-            POINT cursorPoint;
-            GetCursorPos(&cursorPoint);
 
             ElectronicComponent **components = currentSnapshot.getComponents();
             for (int i = 0; i < currentSnapshot.getComponentsNumber(); i++)
             {
+                setcurrentwindow(this->window_code);
 
                 if (components[i]->isSelected())
                 {
-                    components[i]->setPositionCenter(helper.makeVector_2D(cursorPoint.x, cursorPoint.y));
+                    POINT cursorPoint;
+                    GetCursorPos(&cursorPoint);
+
+                    double x_point = cursorPoint.x;
+                    double y_point = cursorPoint.y;
+
+                    //keep the component in boundaries
+                    if (x_point - components[i]->getWidth()/2 < this-> rl + BORDER_SPACE)
+                    {
+                        x_point = this->rl + BORDER_SPACE + components[i]->getWidth()/2;
+                    }
+                    else if (x_point+ components[i]->getWidth()/2 > this->rr - BORDER_SPACE)
+                    {
+                        x_point = this->rr - BORDER_SPACE - components[i]->getWidth()/2;
+                    }
+
+                    if (y_point - components[i]->getHeight()/2 <this->rt + BORDER_SPACE)
+                    {
+                        y_point = this->rt + BORDER_SPACE + components[i]->getHeight()/2;
+                    }
+                    else if (y_point + components[i]->getHeight()/2 >this->rb - BORDER_SPACE)
+                    {
+                        y_point = this->rb - BORDER_SPACE - components[i]->getHeight()/2;
+                    }
+
+                    components[i]->setPositionCenter(helper.makeVector_2D(x_point, y_point));
                 }
             }
         }

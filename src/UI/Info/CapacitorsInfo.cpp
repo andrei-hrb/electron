@@ -78,7 +78,7 @@ int CapacitorsInfo::WatchClick()
                 ok = 0;
             }
         }
-        delay(200);
+        delay(100);
     }
 
     closegraph(this->window_code);
