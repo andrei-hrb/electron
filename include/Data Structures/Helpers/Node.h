@@ -3,11 +3,11 @@
 
 #include <vector>
 
-#include "Data Structures/Snapshot.h"
+#include "Data Structures/Helpers/Change.h"
 
 class Node {
     public:
-    Snapshot state;
+    Change value;
     Node* next;
     Node* previous;
 };

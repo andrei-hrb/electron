@@ -7,7 +7,7 @@
 
 #include "Electronic Components/Electronics.h"
 #include "UI/UI.h"
-#include "Data Structures/ColectionOfSnapshots.h"
+#include "Data Structures/Changes.h"
 #include "Data Structures/Snapshot.h"
 
 #include "Helper.h"
@@ -22,8 +22,9 @@ class NewProjectMenu
         Button rotate_l, rotate_r, flip_h, flip_v;
         Button undo, redo;
         Button inc, dec;
+        Button box;
 
-        ColectionOfSnapshots completeSnapshots;
+        Changes changes;
         Snapshot currentSnapshot;
 
         NameFile nameFileMenu;
@@ -39,6 +40,9 @@ class NewProjectMenu
 
         void Show();
         void WatchClick();
+
+        void implementChangeUndo();
+        void implementChangeRedo();
 };
 
 #endif // NEWPROJECTMENU_H
