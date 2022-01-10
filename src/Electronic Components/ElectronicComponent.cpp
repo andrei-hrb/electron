@@ -100,6 +100,7 @@ void ElectronicComponent::setPositionDownRight(Helper::Vector_2D thisPosition)
 //Setter of the width:
 void ElectronicComponent::setWidth(double thisWidth)
 {
+    if(thisWidth < 30 || thisWidth > 500)  return;
     Erase();
 
     width = thisWidth;
@@ -130,6 +131,8 @@ void ElectronicComponent::setWidth(double thisWidth)
 //Setter of the height:
 void ElectronicComponent::setHeight(double thisHeight)
 {
+    if(thisHeight < 30 || thisHeight > 500)  return;
+
     Erase();
 
     height = thisHeight;
@@ -163,9 +166,9 @@ void ElectronicComponent::setComponentCode(std::string thisComponentCode){
 }
 
 //Setter of the code of the connected component at a given index:
-void ElectronicComponent::setConnectedComponentCodeAtPoint(int thisPoint, int thisComponentCode){
+void ElectronicComponent::setConnectedComponentCodeAtPoint(int thisPoint, std::string thisComponentCode){
 
-    if(0 <= thisPoint && thisPoint < numberOfConnectionPoints && thisComponentCode >= 0)
+    if(0 <= thisPoint && thisPoint < numberOfConnectionPoints)
         connectionPoints[thisPoint].connectedComponentCode = thisComponentCode;
 }
 
@@ -248,7 +251,7 @@ int ElectronicComponent::getNumberOfConnectionPoints(){
     return numberOfConnectionPoints;
 }
 
-int ElectronicComponent::getCodeOfConnectedComponentAtPoint(int thisPoint){
+std::string ElectronicComponent::getCodeOfConnectedComponentAtPoint(int thisPoint){
 
     return connectionPoints[thisPoint].connectedComponentCode;
 }
@@ -401,6 +404,14 @@ int ElectronicComponent::getRotationState()
     return rotateState;
 }
 
+void ElectronicComponent::drawConnectionLines(){
+    /*
+    for(int i = 0; i < numberOfConnectionPoints; i++){
+        if(connectionPoints[i].connectedComponentCode != "-2")
+            ElectronicComponent_helper.drawWire(connectionPoints[i].position, currentSnapshot.getComponent(connectionPoints[i].connectedComponentCode).connectionPoints[connectionPoints[i].connectedIndex].position);
+    }*/
+}
+
 //Passing trough a string all the data about the component:
 std::string ElectronicComponent::toString()
 {
@@ -426,7 +437,7 @@ std::string ElectronicComponent::toString()
     for(int i = 0; i < numberOfConnectionPoints; i++)
         text += std::string(std::string("Point ") +
                 std::to_string(i) + std::string(": ") +
-                std::to_string(connectionPoints[i].connectedComponentCode) +
+                connectionPoints[i].connectedComponentCode +
                 std::string(" | Coordinates: ") +
                 std::string("x: ") + std::to_string(connectionPoints[i].position.x) + std::string(" \ ") +
                 std::string("y: ") + std::to_string(connectionPoints[i].position.y) + std::string(";\n"));

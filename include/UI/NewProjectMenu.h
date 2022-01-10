@@ -32,15 +32,18 @@ class NewProjectMenu
         bool iscurrentSnapshotelected;
         ElectronicComponent selectedComponent;
 
-
         int window_code;
         std::string filepath;
         //boundaries
         double rl,rt,rr,rb;
 
+        bool wiring = false;
+        double lastCursorX = -1, lastCursorY = -1;
+
         void Show();
         void WatchClick();
 
+        void drawWiresForComponent(std::string thisComponentCode, bool eraseMode);
         void implementChangeUndo();
         void implementChangeRedo();
 };
