@@ -26,6 +26,10 @@ Node* ColectionOfSnapshots::getTail() {
     return tail;
 }
 
+bool ColectionOfSnapshots::isEmpty() {
+    return current == NULL;
+}
+
 void ColectionOfSnapshots::setCurrent(Snapshot state) {
     Node *temporary = new Node();
     temporary->state = state;

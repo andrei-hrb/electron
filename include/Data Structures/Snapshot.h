@@ -1,6 +1,7 @@
 #ifndef SNAPSHOT
 #define SNAPSHOT
 
+#include <iostream>
 #include <string>
 #include <map>
 
@@ -27,7 +28,9 @@ public:
     static int nameToCtype(std::string name);
     static std::string removeSubString(std::string str, std::string subStr);
 
+    void saveToStream(std::ostream &stream, int i);
     void saveToFile(std::string filepath);
+    void importFromStream(std::istream &stream);
     void importFromFile(std::string filepath);
 };
 
